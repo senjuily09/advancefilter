@@ -1,0 +1,6 @@
+@advancefilter_HostAddress = http://localhost:5038
+
+GET {{advancefilter_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
