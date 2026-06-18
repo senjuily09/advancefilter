@@ -1,28 +1,45 @@
-namespace advancefilter
+using advancedfilter.Services;
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddCors(options =>
 {
-    public class Program
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        policy.SetIsOriginAllowed(origin =>
+                new Uri(origin).Host == "localhost")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
-            builder.Services.AddControllers();
-            builder.Services.AddOpenApi();
 
-            var app = builder.Build();
+builder.Services.AddScoped<MovieFilterService>();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
 
-            app.UseHttpsRedirection();
+builder.Services.AddControllers();
 
-            app.UseAuthorization();
 
-            app.MapControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-            app.Run();
-        }
-    }
+
+var app = builder.Build();
+
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+
+app.UseCors("AllowFrontend");
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
+
+app.Run();
