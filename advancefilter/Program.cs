@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<MovieFilterService>();
 
-
+ 
 builder.Services.AddControllers();
 
 
