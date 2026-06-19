@@ -5,21 +5,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.SetIsOriginAllowed(origin =>
-                new Uri(origin).Host == "localhost")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.SetIsOriginAllowed(origin =>
+                    new Uri(origin).Host == "localhost")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 
-builder.Services.AddScoped<MovieFilterService>();
-
- 
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<MovieFilterService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -38,8 +37,9 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
 
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

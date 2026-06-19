@@ -4,24 +4,23 @@
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Title { get; set; }
 
-        public string Genre { get; set; }
+        public string Poster_Path { get; set; }
+
+        public string Release_Date { get; set; }
+
+        public double Vote_Average { get; set; }
+
+        public int Vote_Count { get; set; }
+
+
+        // Extra fields for filtering
+
+        public int Genre { get; set; }
 
         public string Language { get; set; }
 
-        public int Year { get; set; }
-
-        public string Country { get; set; }
-
-        public double Rating { get; set; }
-
-        public int UserRatingCount { get; set; }
-
         public int Duration { get; set; }
-
-        public string Director { get; set; }
-
-        public string Actor { get; set; }
     }
 }

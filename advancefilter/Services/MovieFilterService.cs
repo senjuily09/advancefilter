@@ -1,105 +1,169 @@
 ﻿using advancedfilter.Models;
 
+
 namespace advancedfilter.Services
 {
     public class MovieFilterService
     {
 
-        private readonly List<Movie> movies = new()
+        private List<Movie> movies = new()
         {
+
             new Movie
             {
                 Id = 1,
-                Name = "Avengers",
-                Genre = "Action",
-                Language = "English",
-                Year = 2019,
-                Country = "USA",
-                Rating = 8.5,
-                UserRatingCount = 50000,
-                Duration = 150,
-                Director = "Russo Brothers",
-                Actor = "Robert Downey Jr"
+                Title = "Avengers",
+                Poster_Path = "/poster.jpg",
+                Release_Date = "2019-04-26",
+                Vote_Average = 8.5,
+                Vote_Count = 50000,
+                Genre = 28,
+                Language = "en",
+                Duration = 150
             },
+
 
             new Movie
             {
                 Id = 2,
-                Name = "RRR",
-                Genre = "Action",
-                Language = "Telugu",
-                Year = 2022,
-                Country = "India",
-                Rating = 8.0,
-                UserRatingCount = 70000,
-                Duration = 182,
-                Director = "S.S Rajamouli",
-                Actor = "NTR"
+                Title = "RRR",
+                Poster_Path = "/rrr.jpg",
+                Release_Date = "2022-03-25",
+                Vote_Average = 8.0,
+                Vote_Count = 70000,
+                Genre = 28,
+                Language = "tel",
+                Duration = 182
             }
+
         };
 
 
+
         public List<Movie> FilterMovies(
-            string? genre,
+            string? search,
+            int? genre,
             string? language,
             int? year,
-            double? minimumRating,
-            double? maximumRating,
+            double? minRating,
+            double? maxRating,
             int? duration)
         {
 
-            var result = movies;
+            List<Movie> result = new List<Movie>();
 
 
-            if (genre != null)
+            int i = 0;
+
+
+            while (i < movies.Count)
             {
-                result = result
-                    .Where(x => x.Genre == genre)
-                    .ToList();
-            }
+
+                Movie movie = movies[i];
 
 
-            if (language != null)
-            {
-                result = result
-                    .Where(x => x.Language == language)
-                    .ToList();
-            }
+                bool match = true;
 
 
-            if (year != null)
-            {
-                result = result
-                    .Where(x => x.Year >= year)
-                    .ToList();
-            }
+
+                // Search filter
+                if (search != null)
+                {
+                    if (!movie.Title
+                        .ToLower()
+                        .Contains(search.ToLower()))
+                    {
+                        match = false;
+                    }
+                }
 
 
-            if (minimumRating != null)
-            {
-                result = result
-                    .Where(x => x.Rating >= minimumRating)
-                    .ToList();
-            }
+
+                // Genre filter
+                if (genre != null)
+                {
+                    if (movie.Genre != genre)
+                    {
+                        match = false;
+                    }
+                }
 
 
-            if (maximumRating != null)
-            {
-                result = result
-                    .Where(x => x.Rating <= maximumRating)
-                    .ToList();
-            }
+
+                // Language filter
+                if (language != null)
+                {
+                    if (movie.Language != language)
+                    {
+                        match = false;
+                    }
+                }
 
 
-            if (duration != null)
-            {
-                result = result
-                    .Where(x => x.Duration <= duration)
-                    .ToList();
+
+                // Year filter
+                if (year != null)
+                {
+                    int movieYear =
+                    Convert.ToInt32(
+                    movie.Release_Date.Substring(0, 4));
+
+
+                    if (movieYear < year)
+                    {
+                        match = false;
+                    }
+                }
+
+
+
+                // Minimum rating
+                if (minRating != null)
+                {
+                    if (movie.Vote_Average < minRating)
+                    {
+                        match = false;
+                    }
+                }
+
+
+
+                // Maximum rating
+                if (maxRating != null)
+                {
+                    if (movie.Vote_Average > maxRating)
+                    {
+                        match = false;
+                    }
+                }
+
+
+
+                // Duration
+                if (duration != null)
+                {
+                    if (movie.Duration > duration)
+                    {
+                        match = false;
+                    }
+                }
+
+
+
+                if (match)
+                {
+                    result.Add(movie);
+                }
+
+
+                i++;
+
             }
 
 
             return result;
+
         }
+
     }
 }
