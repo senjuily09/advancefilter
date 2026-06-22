@@ -1,4 +1,4 @@
-using advancedfilter.Services;
+using advancefilter.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,11 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
+
+builder.Services.AddHttpClient<TMDBService>();
+
 builder.Services.AddScoped<MovieFilterService>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -36,10 +40,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 
+
 app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 
+
 app.MapControllers();
+
 
 app.Run();

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using advancedfilter.Services;
+using advancefilter.Services;
 
 
-namespace advancedfilter.Controllers
+namespace advancefilter.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
-
     public class MoviesController : ControllerBase
     {
 
@@ -23,36 +22,37 @@ namespace advancedfilter.Controllers
 
 
         [HttpGet("filter")]
+        public async Task<IActionResult> FilterMovies(
 
-        public IActionResult FilterMovies(
             string? search,
             int? genre,
             string? language,
             int? year,
             double? minRating,
-            double? maxRating,
-            int? duration
-            )
+            double? maxRating
+
+        )
         {
 
 
-            var result = service.FilterMovies(
+            var movies =
+            await service.FilterMovies(
                 search,
                 genre,
                 language,
                 year,
                 minRating,
-                maxRating,
-                duration
+                maxRating
             );
 
 
             return Ok(new
             {
-                results = result
+                results = movies
             });
 
         }
 
     }
+
 }

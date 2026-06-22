@@ -1,26 +1,21 @@
-﻿namespace advancedfilter.Models
+﻿namespace advancefilter.Models
 {
     public class Movie
     {
-        public int Id { get; set; }
+        public int id { get; set; }
 
-        public string Title { get; set; }
+        public string title { get; set; }
 
-        public string Poster_Path { get; set; }
+        public string poster_path { get; set; }
 
-        public string Release_Date { get; set; }
+        public string release_date { get; set; }
 
-        public double Vote_Average { get; set; }
+        public double vote_average { get; set; }
 
-        public int Vote_Count { get; set; }
+        public int vote_count { get; set; }
 
+        public List<int> genre_ids { get; set; }
 
-        // Extra fields for filtering
-
-        public int Genre { get; set; }
-
-        public string Language { get; set; }
-
-        public int Duration { get; set; }
+        public string original_language { get; set; }
     }
 }

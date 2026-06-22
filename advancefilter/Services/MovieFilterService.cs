@@ -1,148 +1,96 @@
-﻿using advancedfilter.Models;
+﻿using advancefilter.Models;
 
 
-namespace advancedfilter.Services
+namespace advancefilter.Services
 {
     public class MovieFilterService
     {
 
-        private List<Movie> movies = new()
+        private readonly TMDBService tmdbService;
+
+
+        public MovieFilterService(TMDBService tmdbService)
         {
-
-            new Movie
-            {
-                Id = 1,
-                Title = "Avengers",
-                Poster_Path = "/poster.jpg",
-                Release_Date = "2019-04-26",
-                Vote_Average = 8.5,
-                Vote_Count = 50000,
-                Genre = 28,
-                Language = "en",
-                Duration = 150
-            },
-
-
-            new Movie
-            {
-                Id = 2,
-                Title = "RRR",
-                Poster_Path = "/rrr.jpg",
-                Release_Date = "2022-03-25",
-                Vote_Average = 8.0,
-                Vote_Count = 70000,
-                Genre = 28,
-                Language = "tel",
-                Duration = 182
-            }
-
-        };
+            this.tmdbService = tmdbService;
+        }
 
 
 
-        public List<Movie> FilterMovies(
+        public async Task<List<Movie>> FilterMovies(
             string? search,
             int? genre,
             string? language,
             int? year,
             double? minRating,
-            double? maxRating,
-            int? duration)
+            double? maxRating)
         {
 
-            List<Movie> result = new List<Movie>();
+
+            var movies = await tmdbService.GetMovies();
 
 
-            int i = 0;
+            var result = new List<Movie>();
 
 
-            while (i < movies.Count)
+            foreach (var movie in movies)
             {
-
-                Movie movie = movies[i];
-
 
                 bool match = true;
 
 
 
-                // Search filter
-                if (search != null)
+                if (search != null &&
+                !movie.title
+                .ToLower()
+                .Contains(search.ToLower()))
                 {
-                    if (!movie.Title
-                        .ToLower()
-                        .Contains(search.ToLower()))
-                    {
-                        match = false;
-                    }
+                    match = false;
                 }
 
 
 
-                // Genre filter
-                if (genre != null)
+                if (genre != null &&
+                !movie.genre_ids.Contains(genre.Value))
                 {
-                    if (movie.Genre != genre)
-                    {
-                        match = false;
-                    }
+                    match = false;
                 }
 
 
 
-                // Language filter
-                if (language != null)
+                if (language != null &&
+                movie.original_language != language)
                 {
-                    if (movie.Language != language)
-                    {
-                        match = false;
-                    }
+                    match = false;
                 }
 
 
 
-                // Year filter
-                if (year != null)
+                if (minRating != null &&
+                movie.vote_average < minRating)
                 {
+                    match = false;
+                }
+
+
+
+                if (maxRating != null &&
+                movie.vote_average > maxRating)
+                {
+                    match = false;
+                }
+
+
+
+                if (year != null &&
+                movie.release_date != null)
+                {
+
                     int movieYear =
                     Convert.ToInt32(
-                    movie.Release_Date.Substring(0, 4));
+                    movie.release_date.Substring(0, 4));
 
 
                     if (movieYear < year)
-                    {
-                        match = false;
-                    }
-                }
-
-
-
-                // Minimum rating
-                if (minRating != null)
-                {
-                    if (movie.Vote_Average < minRating)
-                    {
-                        match = false;
-                    }
-                }
-
-
-
-                // Maximum rating
-                if (maxRating != null)
-                {
-                    if (movie.Vote_Average > maxRating)
-                    {
-                        match = false;
-                    }
-                }
-
-
-
-                // Duration
-                if (duration != null)
-                {
-                    if (movie.Duration > duration)
                     {
                         match = false;
                     }
@@ -154,9 +102,6 @@ namespace advancedfilter.Services
                 {
                     result.Add(movie);
                 }
-
-
-                i++;
 
             }
 
