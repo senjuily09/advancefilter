@@ -9,6 +9,8 @@ namespace advancefilter.Services
 
         private readonly HttpClient client;
 
+        private List<Movie> movies = new();
+
 
         private string apiKey =
         "a9d997e51a29da1fc0f3173b116e07a7";
@@ -24,26 +26,43 @@ namespace advancefilter.Services
         public async Task<List<Movie>> GetMovies()
         {
 
-            string url =
-            $"https://api.themoviedb.org/3/movie/popular?api_key={apiKey}&language=en-US&page=1";
+            // If movies already loaded, return them
+            if (movies.Count > 0)
+            {
+                return movies;
+            }
 
 
-            var response =
-            await client.GetStringAsync(url);
+            for (int page = 1; page <= 99; page++)
+            {
+
+                string url =
+                $"https://api.themoviedb.org/3/movie/popular?api_key={apiKey}&language=en-US&page={page}";
+
+
+                var response =
+                await client.GetStringAsync(url);
 
 
 
-            var data =
-            JsonSerializer.Deserialize<TMDBResponse>(response);
+                var data =
+                JsonSerializer.Deserialize<TMDBResponse>(response);
 
 
 
-            return data.results;
+                if (data != null)
+                {
+                    movies.AddRange(data.results);
+                }
+
+            }
+
+
+            return movies;
 
         }
 
     }
-
 
 
     public class TMDBResponse
