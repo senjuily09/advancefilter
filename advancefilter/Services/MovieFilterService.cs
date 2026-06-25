@@ -71,7 +71,7 @@ namespace advancefilter.Services
                         movie.release_date.Substring(0, 4)
                     );
 
-                    if (movieYear != year.Value)
+                    if (movieYear < year.Value)
                     {
                         match = false;
                     }
