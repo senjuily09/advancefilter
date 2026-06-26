@@ -11,7 +11,6 @@ namespace advancefilter.Services
             _client = client;        }
 
 
-
         public async Task<string> Ask(string question)
         {
             var request = new
