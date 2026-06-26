@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace MovieFilterAPI.Services
+namespace advancefilter.Services
 {
     public class OllamaService
     {

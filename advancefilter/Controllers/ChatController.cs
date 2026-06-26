@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using advancefilter.DTO;
+using advancefilter.Models;
 using advancefilter.Services;
 
 
