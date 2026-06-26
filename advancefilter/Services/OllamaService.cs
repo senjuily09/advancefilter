@@ -8,8 +8,8 @@ namespace advancefilter.Services
 
         public OllamaService(HttpClient client)
         {
-            _client = client;
-        }
+            _client = client;        }
+
 
 
         public async Task<string> Ask(string question)
