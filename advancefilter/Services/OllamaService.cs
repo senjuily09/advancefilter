@@ -16,7 +16,22 @@ namespace advancefilter.Services
             var request = new
             {
                 model = "llama3.1:8b",
-                prompt = question,
+                prompt =
+     $"""
+    You are MovieBot.
+    You only answer questions about movies.
+
+    Help users with:
+    - movie recommendations
+    - genres
+    - ratings
+    - actors
+    - release years
+    - movie details
+
+    User question:
+    {question}
+    """,
                 stream = false
             };
 
