@@ -18,22 +18,22 @@ namespace advancefilter.Services
 
         public async Task<string> Ask(string question)
         {
-            var requestBody = new
+            var request = new
             {
                 model = "llama-3.1-8b-instant",
                 messages = new[]
-                {
-                    new
-                    {
-                        role = "system",
-                        content = "You are a helpful movie chatbot. Answer only movie related questions."
-                    },
-                    new
-                    {
-                        role = "user",
-                        content = question
-                    }
-                }
+    {
+        new
+        {
+            role = "system",
+            content = "You are MovieBot. Only answer questions related to movies. Help users find movies, genres, ratings, actors, recommendations."
+        },
+        new
+        {
+            role = "user",
+            content = question
+        }
+    }
             };
 
 
