@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -18,22 +19,22 @@ namespace advancefilter.Services
 
         public async Task<string> Ask(string question)
         {
-            var request = new
+            var requestBody = new
             {
                 model = "llama-3.1-8b-instant",
                 messages = new[]
-    {
-        new
-        {
-            role = "system",
-            content = "You are MovieBot. Only answer questions related to movies. Help users find movies, genres, ratings, actors, recommendations."
-        },
-        new
-        {
-            role = "user",
-            content = question
+                {
+            new
+            {
+                role = "system",
+                content = "You are MovieBot. Only answer questions related to movies. Help users find movies, genres, ratings, actors, recommendations."
+            },
+            new
+            {
+                role = "user",
+                content = question
+            }
         }
-    }
             };
 
 
@@ -56,7 +57,6 @@ namespace advancefilter.Services
 
             var response = await _client.SendAsync(request);
 
-
             response.EnsureSuccessStatusCode();
 
 
@@ -66,12 +66,14 @@ namespace advancefilter.Services
             using var doc = JsonDocument.Parse(json);
 
 
-            return doc
-                .RootElement
+            var message = doc.RootElement
                 .GetProperty("choices")[0]
                 .GetProperty("message")
                 .GetProperty("content")
                 .GetString();
+
+
+            return message;
         }
     }
 }
