@@ -10,10 +10,10 @@ namespace advancefilter.Controllers
     public class ChatController : ControllerBase
     {
 
-        private readonly OllamaService _ollama;
+        private readonly GroqService _ollama;
 
 
-        public ChatController(OllamaService ollama)
+        public ChatController(GroqService ollama)
         {
             _ollama = ollama;
         }

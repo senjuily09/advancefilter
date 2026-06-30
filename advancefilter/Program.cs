@@ -31,7 +31,7 @@ builder.Services.AddCors(options =>
     });
 //});
 
-builder.Services.AddHttpClient<OllamaService>();
+builder.Services.AddHttpClient<GroqService>();
 
 builder.Services.AddControllers();
 
