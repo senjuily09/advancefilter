@@ -1,4 +1,5 @@
 using advancefilter.Services;
+using advancefilter.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,8 @@ builder.Services.AddCors(options =>
 //});
 
 builder.Services.AddHttpClient<GroqService>();
+
+builder.Services.AddSingleton<Neo4jService>();
 
 builder.Services.AddControllers();
 
