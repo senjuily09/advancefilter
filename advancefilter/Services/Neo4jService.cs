@@ -10,6 +10,7 @@ public class Neo4jService
     {
         _driver = GraphDatabase.Driver(
             "bolt://localhost:7687",
+              
             AuthTokens.Basic("neo4j", "12345678"));
     }
 
