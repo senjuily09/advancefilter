@@ -19,11 +19,22 @@ namespace advancefilter.Controllers
         [HttpPost]
         public async Task<IActionResult> Chat(ChatRequest request)
         {
-            // Temporary test: Add a movie node to Neo4j
-            await _neo4j.CreateMovie("Interstellar", "Sci-Fi");
+            // Create graph if it doesn't exist
+            await _neo4j.SeedKnowledgeGraph();
 
-            // Get chatbot response from Groq
-            var answer = await _groq.Ask(request.Message);
+            // Read information from Neo4j
+            var context = await _neo4j.GetChatbotContext();
+
+            // Combine graph knowledge with user question
+            var prompt = $@"
+Context:
+{context}
+
+User Question:
+{request.Message}
+";
+
+            var answer = await _groq.Ask(prompt);
 
             return Ok(new
             {
